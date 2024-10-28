@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora Completa</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #000; /* Fundo preto */
+            color: white; /* Texto em branco */
+        }
+
+        .container {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 1200px;
+            gap: 10px;
+            margin: 0;
+        }
+
+        .form-box {
+            background-color: #fff; /* Fundo branco para as caixas */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 280px;
+            max-width: 30%;
+            box-sizing: border-box;
+            color: black; /* Texto em preto nas caixas */
+        }
+
+        h1, .anotacoes-title {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+            color: black; /* Títulos em preto */
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            color: black; /* Texto das labels em preto */
+        }
+
+        input, button, select, textarea {
+            padding: 8px;
+            margin: 8px 0;
+            width: 100%;
+            max-width: 100%;
+            display: block;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: black; /* Fundo preto dos botões */
+            color: white; /* Texto dos botões em branco */
+            border: none; /* Remove bordas dos botões */
+            cursor: pointer; /* Aponta que é um botão */
+        }
+
+        button:hover {
+            opacity: 0.9; /* Efeito de hover nos botões */
+        }
+
+        .result {
+            margin-top: 20px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Cores para as caixas */
+        .azul {
+            background-color: #007BFF; /* Azul */
+        }
+
+        .verde {
+            background-color: #28A745; /* Verde */
+        }
+
+        .vermelho {
+            background-color: #DC3545; /* Vermelho */
+        }
+
+        .calculator {
+            background-color: white; /* Fundo branco para a calculadora */
+            padding: 10px;
+            border-radius: 8px; /* Cantos arredondados */
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center; /* Centraliza o texto na calculadora */
+            margin-top: 20px; /* Espaço acima da calculadora */
+        }
+
+        .calculator-display {
+            background-color: #f0f0f0; /* Fundo claro para o display */
+            padding: 10px;
+            border-radius: 5px; /* Cantos arredondados */
+            margin-bottom: 10px; /* Espaço inferior */
+            font-size: 1.5em; /* Tamanho do texto */
+            color: black; /* Texto do display em preto */
+        }
+
+        table {
+            width: 100%; /* Largura total da tabela */
+            border-collapse: collapse; /* Remove espaços entre bordas */
+        }
+
+        table td {
+            padding: 2px; /* Menos espaçamento entre os botões */
+        }
+
+        table button {
+            width: 100%; /* Botões ocupam toda a largura da célula */
+            padding: 10px; /* Ajusta o espaçamento */
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cálculo de Energia Térmica -->
+        <div class="form-box azul">
+            <h1>Cálculo de Energia Térmica</h1>
+
+            <label for="volumeAgua">Volume de água por pessoa (em litros):</label>
+            <input type="number" id="volumeAgua" step="any" required>
+
+            <label for="numPessoas">Número de pessoas:</label>
+            <input type="number" id="numPessoas" step="1" required>
+
+            <label for="mAgua">Quantidade de água (em metros cúbicos):</label>
+            <input type="number" id="mAgua" step="any" required>
+
+            <label for="cAgua">Capacidade térmica da água (J/Kg°C):</label>
+            <input type="number" id="cAgua" step="any" required>
+
+            <label for="tempInicial">Temperatura inicial da água (em °C):</label>
+            <input type="number" id="tempInicial" step="any" required>
+
+            <label for="tempFinal">Temperatura final da água (em °C):</label>
+            <input type="number" id="tempFinal" step="any" required>
+
+            <button type="button" onclick="calcularEnergia()">Calcular Energia Térmica</button>
+
+            <div class="result" id="resultEnergia"></div>
+        </div>
+
+        <!-- Cálculo de Transferência de Calor -->
+        <div class="form-box verde">
+            <h1>Cálculo de Transferência de Calor</h1>
+
+            <label for="material">Escolha o material (condutividade térmica - k):</label>
+            <select id="material" onchange="mostrarCampo('material', 'kOutro', 'linkCondutividade')" required>
+                <option value="204">Alumínio (k = 204 W/m·K)</option>
+                <option value="1.5">Telhas de Assoalho (k = 1,5 W/m·K)</option>
+                <option value="0.9">Cimento (k = 0,9 W/m·K)</option>
+                <option value="0.8">Vidro (k = 0,8 W/m·K)</option>
+                <option value="outro">Outro (Insira manualmente)</option>
+            </select>
+            <input type="number" id="kOutro" class="hidden" step="0.01" placeholder="Insira a condutividade térmica">
+            <a href="http://www.protolab.com.br/Tabela-Condutividade-Material-Construcao.htm" target="_blank" id="linkCondutividade" class="hidden">Tabela de condutividade de materiais</a><br>
+
+            <label for="area">Escolha a área da superfície (A) [m²]:</label>
+            <select id="area" onchange="mostrarCampo('area', 'areaOutro')" required>
+                <option value="10">10 m²</option>
+                <option value="20">20 m²</option>
+                <option value="30">30 m²</option>
+                <option value="40">40 m²</option>
+                <option value="outro">Outro (Insira manualmente)</option>
+            </select>
+            <input type="number" id="areaOutro" class="hidden" step="0.01" placeholder="Insira a área"><br>
+
+            <label for="espessura">Escolha a espessura da superfície (d) [m]:</label>
+            <select id="espessura" onchange="mostrarCampo('espessura', 'espessuraOutro')" required>
+                <option value="0.1">0,1 m</option>
+                <option value="0.2">0,2 m</option>
+                <option value="0.3">0,3 m</option>
+                <option value="0.4">0,4 m</option>
+                <option value="outro">Outro (Insira manualmente)</option>
+            </select>
+            <input type="number" id="espessuraOutro" class="hidden" step="0.01" placeholder="Insira a espessura"><br>
+
+            <label for="temperatura">Escolha a temperatura (ΔT) [°C]:</label>
+            <select id="temperatura" onchange="mostrarCampo('temperatura', 'temperaturaOutro')" required>
+                <option value="20">20 °C</option>
+                <option value="30">30 °C</option>
+                <option value="40">40 °C</option>
+                <option value="outro">Outro (Insira manualmente)</option>
+            </select>
+            <input type="number" id="temperaturaOutro" class="hidden" step="0.01" placeholder="Insira a temperatura"><br>
+
+            <button type="button" onclick="calcularCalor()">Calcular Calor</button>
+
+            <div class="result" id="resultadoCalor"></div>
+        </div>
+
+        <!-- Cálculo de Área de Painéis -->
+        <div class="form-box vermelho">
+            <h1>Cálculo de Área de Painéis</h1>
+
+            <label for="calorTotal">Calor total necessário (em W):</label>
+            <input type="number" id="calorTotal" step="any" required>
+
+            <button type="button" onclick="calcularPainel()">Calcular Área de Painéis</button>
+
+            <div class="result" id="resultadoPainel"></div>
+
+            <!-- Caixa de texto para anotações -->
+            <label for="anotacoes" class="anotacoes-title">Anotações</label>
+            <textarea id="anotacoes" rows="4" placeholder="Escreva suas anotações aqui..." style="width:100%; font-weight: bold; color: black;"></textarea>
+            <button type="button" onclick="toggleCalculator()">Mostrar Calculadora</button> <!-- Botão para mostrar a calculadora -->
+        </div>
+    </div>
+
+    <div class="calculator hidden" id="calculator">
+        <div class="calculator-display" id="display">0</div>
+        <table>
+            <tr>
+                <td><button onclick="adicionarNumero('7')">7</button></td>
+                <td><button onclick="adicionarNumero('8')">8</button></td>
+                <td><button onclick="adicionarNumero('9')">9</button></td>
+                <td><button onclick="adicionarOperacao('/')">/</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="adicionarNumero('4')">4</button></td>
+                <td><button onclick="adicionarNumero('5')">5</button></td>
+                <td><button onclick="adicionarNumero('6')">6</button></td>
+                <td><button onclick="adicionarOperacao('*')">*</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="adicionarNumero('1')">1</button></td>
+                <td><button onclick="adicionarNumero('2')">2</button></td>
+                <td><button onclick="adicionarNumero('3')">3</button></td>
+                <td><button onclick="adicionarOperacao('-')">-</button></td>
+            </tr>
+            <tr>
+                <td><button onclick="adicionarNumero('0')">0</button></td>
+                <td><button onclick="calcularResultado()">=</button></td>
+                <td><button onclick="limpar()">C</button></td>
+                <td><button onclick="adicionarOperacao('+')">+</button></td>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        let displayValue = '0';
+        let operation = null;
+        let firstValue = null;
+
+        function adicionarNumero(numero) {
+            if (displayValue === '0') {
+                displayValue = numero;
+            } else {
+                displayValue += numero;
+            }
+            atualizarDisplay();
+        }
+
+        function adicionarOperacao(op) {
+            if (firstValue === null) {
+                firstValue = parseFloat(displayValue);
+            } else if (operation) {
+                firstValue = calcular(firstValue, parseFloat(displayValue), operation);
+            }
+            operation = op;
+            displayValue = '0';
+            atualizarDisplay();
+        }
+
+        function calcularResultado() {
+            if (firstValue !== null && operation) {
+                displayValue = calcular(firstValue, parseFloat(displayValue), operation).toFixed(2).toString(); // Arredondar para 2 casas decimais
+                firstValue = null;
+                operation = null;
+                atualizarDisplay();
+            }
+        }
+
+        function calcular(a, b, op) {
+            switch (op) {
+                case '+':
+                    return a + b;
+                case '-':
+                    return a - b;
+                case '*':
+                    return a * b;
+                case '/':
+                    return a / b;
+            }
+        }
+
+        function limpar() {
+            displayValue = '0';
+            firstValue = null;
+            operation = null;
+            atualizarDisplay();
+        }
+
+        function atualizarDisplay() {
+            document.getElementById('display').innerText = displayValue;
+        }
+
+        function toggleCalculator() {
+            const calculator = document.getElementById('calculator');
+            calculator.classList.toggle('hidden');
+        }
+
+        function mostrarCampo(selectId, inputId, linkId = null) {
+            const selecionado = document.getElementById(selectId).value;
+            const campoOutro = document.getElementById(inputId);
+            
+            if (selecionado === 'outro') {
+                campoOutro.classList.remove('hidden');
+                if (linkId) {
+                    document.getElementById(linkId).classList.remove('hidden');
+                }
+            } else {
+                campoOutro.classList.add('hidden');
+                if (linkId) {
+                    document.getElementById(linkId).classList.add('hidden');
+                }
+            }
+        }
+
+        function calcularEnergia() {
+            const volumeAgua = parseFloat(document.getElementById("volumeAgua").value);
+            const numPessoas = parseInt(document.getElementById("numPessoas").value);
+            const mAgua = parseFloat(document.getElementById("mAgua").value);
+            const cAgua = parseFloat(document.getElementById("cAgua").value);
+            const tempInicial = parseFloat(document.getElementById("tempInicial").value);
+            const tempFinal = parseFloat(document.getElementById("tempFinal").value);
+
+            const deltaT = tempInicial - tempFinal;
+            const qJoules = mAgua * cAgua * deltaT;
+            const potencia = qJoules / (8 * 3600);
+            const energiaPorPessoa = potencia / 1200;
+
+            document.getElementById("resultEnergia").innerHTML = `
+                <p>Energia térmica (Q) em joules: ${qJoules.toFixed(2)} J</p>
+                <p>Potência necessária (P): ${potencia.toFixed(2)} W</p>
+                <p>Energia por pessoa: ${energiaPorPessoa.toFixed(2)} W por pessoa</p>
+            `;
+        }
+
+        function calcularCalor() {
+            const k = parseFloat(document.getElementById("material").value === "outro" ? document.getElementById("kOutro").value : document.getElementById("material").value);
+            const area = parseFloat(document.getElementById("area").value === "outro" ? document.getElementById("areaOutro").value : document.getElementById("area").value);
+            const espessura = parseFloat(document.getElementById("espessura").value === "outro" ? document.getElementById("espessuraOutro").value : document.getElementById("espessura").value);
+            const temperatura = parseFloat(document.getElementById("temperatura").value === "outro" ? document.getElementById("temperaturaOutro").value : document.getElementById("temperatura").value);
+
+            const qCalor = (k * area * temperatura) / espessura;
+
+            document.getElementById("resultadoCalor").innerHTML = `
+                <p>Transferência de Calor (Q): ${qCalor.toFixed(2)} W</p>
+            `;
+        }
+
+        function calcularPainel() {
+            const calorTotal = parseFloat(document.getElementById("calorTotal").value);
+            const areaPainel = calorTotal / 1000; // Exemplo de cálculo
+
+            document.getElementById("resultadoPainel").innerHTML = `
+                <p>Área de Painéis necessária: ${areaPainel.toFixed(2)} m²</p>
+            `;
+        }
+    </script>
+</body>
+</html>
